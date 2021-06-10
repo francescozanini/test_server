@@ -27,4 +27,4 @@ for i in tqdm(range(1, 1000)):
 dict = {'dim': ns, 'cpu': time_cpu, 'gpu': time_gpu}
 
 with open('inv_exp.pickle', 'wb') as file:
-    pickle.dump(dict, file, protocol=pickle.HIGHEST_PROTOCOL)
+    pickle.dump(dict, file)
