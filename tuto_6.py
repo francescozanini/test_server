@@ -66,11 +66,13 @@ test_y = labels[-test_size:]
 batch_size = 100
 epochs = 10
 
+# EVERYTHING AS TUTO5 - END
+
+
 optimizer = optim.Adam(net.parameters(), lr=1E-3)                               # Adam optimizer
 loss_function = nn.MSELoss()                                                    # MSE loss function
 
-# EVERYTHING AS TUTO5 - END
-
+net = Net().to(device)
 
 def train(net):
     for epoch in range(epochs):
@@ -99,9 +101,6 @@ def test(net):
                 correct += 1
             total += 1
     print('Accuracy: {}'.format(round(correct/total), 3))
-
-
-net = Net().to(device)
 
 train(net)
 test(net)
