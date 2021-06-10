@@ -14,7 +14,7 @@ print('Cuda availability:', torch.cuda.is_available())
 print('# GPUs: {}'.format(torch.cuda.device_count()))
 
 if torch.cuda.is_available():
-    device = torch.device('cuda:0')
+    device = torch.device('cuda:1')
     print('Running on GPU')
 else:
     device = torch.device('cpu')
