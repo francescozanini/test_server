@@ -79,7 +79,7 @@ loss_function = nn.MSELoss()                                                    
 def fwd_pass(x, y, train=False):
     if train:
         optimizer.zero_grad()
-    ouputs = net(x)
+    outputs = net(x)
     matches = [torch.argmax(i) == torch.argmax(j) for i, j in zip(outputs, y)]
     acc = mathces.count(True)/len(matches)
     loss = loss_function(outputs, y)
