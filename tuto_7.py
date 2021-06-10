@@ -90,6 +90,7 @@ def fwd_pass(x, y, train=False):
 
 def test(size=32):
     random_start = np.random.randint(len(test_x)-size)
+    embed()
     x, y = test_x[random_start, random_start+size], test_y[random_start, random_start+size]
     with torch.no_grad():
         acc_val, loss_val = fwd_pass(x.view(-1, 1, 50, 50).to(device), y.to(device))
