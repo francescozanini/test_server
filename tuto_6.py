@@ -100,8 +100,7 @@ def test(net):
             if predicted_class == real_class:
                 correct += 1
             total += 1
-    print('Accuracy: {}'.format(round(correct/total), 3))
-    embed()
+    print('Accuracy: {}'.format(round(correct/total, 3)))
 
 train(net)
 test(net)
