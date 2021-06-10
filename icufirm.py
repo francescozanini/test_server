@@ -10,7 +10,7 @@ ns = []
 time_cpu = []
 time_gpu = []
 
-for i in tqdm(range(1, 1000)):
+for i in tqdm(range(1, 5000)):
     ns.append(i)
     matrix = np.random.randn(i, i)
 
