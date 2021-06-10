@@ -69,10 +69,10 @@ epochs = 10
 # EVERYTHING AS TUTO5 - END
 
 
+net = Net().to(device)
+
 optimizer = optim.Adam(net.parameters(), lr=1E-3)                               # Adam optimizer
 loss_function = nn.MSELoss()                                                    # MSE loss function
-
-net = Net().to(device)
 
 def train(net):
     for epoch in range(epochs):
