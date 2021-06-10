@@ -81,7 +81,7 @@ def fwd_pass(x, y, train=False):
         optimizer.zero_grad()
     outputs = net(x)
     matches = [torch.argmax(i) == torch.argmax(j) for i, j in zip(outputs, y)]
-    acc = mathces.count(True)/len(matches)
+    acc = matches.count(True)/len(matches)
     loss = loss_function(outputs, y)
     if train:
         loss.backward()
