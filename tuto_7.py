@@ -102,8 +102,8 @@ print(model_name)
 
 def train():
     batch_size = 100
-    epochs = 5
-    with open('model.log', 'a') as file:
+    epochs = 30
+    with open('model30.log', 'a') as file:
         for epoch in range(epochs):
             for i in tqdm(range(0, len(train_x), batch_size)):
                 batch_x = train_x[i:i+batch_size].view(-1, 1, 50, 50).to(device)
