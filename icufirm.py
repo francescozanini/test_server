@@ -14,14 +14,14 @@ for i in tqdm(range(1, 10000)):
     ns.append(i)
     matrix = np.random.randn(i, i)
 
-    start_time = time.clock()
+    start_time = time.time()
     np.linalg.inv(matrix)
-    elapsed_time = time.clock() - start_time
+    elapsed_time = time.time() - start_time
     time_cpu.append(elapsed_time)
 
-    start_time = time.clock()
+    start_time = time.time()
     torch.linalg.inv(torch.Tensor(matrix).to(device))
-    elapsed_time = time.clock() - start_time
+    elapsed_time = time.time() - start_time
     time_gpu.append(elapsed_time)
 
 dict = {'dim': ns, 'cpu': time_cpu, 'gpu': time_gpu}
