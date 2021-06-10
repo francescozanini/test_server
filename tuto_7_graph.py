@@ -3,10 +3,10 @@ from matplotlib import style
 
 style.use('ggplot')
 
-model_name = 'Model_2021-06-10_22-47-29'
+model_name = 'Model_2021-06-10_23-24-35' #'Model_2021-06-10_22-47-29'
 
 def create_graph(model_name):
-    contents = open('model.log', 'r').read().split('\n')
+    contents = open('model30.log', 'r').read().split('\n')
     times = []
     accs = []
     losses = []
