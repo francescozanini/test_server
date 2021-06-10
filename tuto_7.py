@@ -1,4 +1,6 @@
-# Training with GPU (cuda)
+#
+
+# EVERYTHING AS TUTO6 - BEGINNING
 
 import torch
 from IPython import embed
@@ -9,6 +11,9 @@ from tqdm import tqdm
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+# EXCEPT THE FOLLOWING
+from datetime import datetime
+import time
 
 training_data = np.load('training_data.npy', allow_pickle=True)
 
@@ -22,8 +27,6 @@ else:
     device = torch.device('cpu')
     print('Running on CPU')
 
-
-# EVERYTHING AS TUTO5 - BEGINNING
 
 class Net(nn.Module):
 
@@ -65,46 +68,49 @@ train_y = labels[:-test_size]
 test_x = images[-test_size:]
 test_y = labels[-test_size:]
 
-batch_size = 100
-epochs = 10
-
-# EVERYTHING AS TUTO5 - END
-
 
 net = Net().to(device)
 
 optimizer = optim.Adam(net.parameters(), lr=1E-3)                               # Adam optimizer
 loss_function = nn.MSELoss()                                                    # MSE loss function
 
-def train(net):
-    for epoch in range(epochs):
-        for i in tqdm(range(0, len(train_x), batch_size)):
-            batch_x = train_x[i:i+batch_size].view(-1, 1, 50, 50)                   # why there is this 1?
-            batch_y = train_y[i:i+batch_size]
+# EVERYTHING AS TUTO6 - END
 
-            batch_x, batch_y = batch_x.to(device), batch_y.to(device)
+def fwd_pass(x, y, train=False):
+    if train:
+        optimizer.zero_grad()
+    ouputs = net(x)
+    matches = [torch.argmax(i) == torch.argmax(j) for i, j in zip(outputs, y)]
+    acc = mathces.count(True)/len(matches)
+    loss = loss_function(outputs, y)
+    if train:
+        loss.backward()
+        optimizer.step()
+    return acc, loss
 
-            optimizer.zero_grad()
-            output = net(batch_x)
-            loss = loss_function(output, batch_y)
-            loss.backward()
-            optimizer.step()
-
-        print('Epoch {}, loss: {}'.format(epoch, loss))
-
-def test(net):
-    correct = 0; total = 0
+def test(size=32):
+    random_start = np.random.randint(len(test_x)-size)
+    x, y = test_x[random_start, random_start+size], test_y[random_start, random_start+size]
     with torch.no_grad():
-        for i in tqdm(range(len(test_x))):
-            real_class = torch.argmax(test_y[i]).to(device)
-            net_out = net(test_x[i].view(-1, 1, 50, 50).to(device)).squeeze()
-            predicted_class = torch.argmax(net_out)
-            if predicted_class == real_class:
-                correct += 1
-            total += 1
-    print('Accuracy: {}'.format(round(correct/total, 3)))
+        acc_val, loss_val = fwd_pass(x.view(-1, 1, 50, 50).to(device), y.to(device))
+    return acc_val, loss_val
 
-train(net)
-test(net)
+curr_datetime = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
-embed()
+model_name = 'Model_' + curr_datetime
+print(model_name)
+
+def train():
+    batch_size = 100
+    epochs = 5
+    with open('model.log', 'a') as file:
+        for epoch in range(epochs):
+            for i in tqdm(range(0, len(train_x), batch_size)):
+                batch_x = train_x[i:i+batch_size].view(-1, 1, 50, 50).to(device)
+                batch_y = train_y[i:i+batch_size].to(device)
+                acc, loss = fwd_pass(batch_x, batch_y, train=True)
+                #if i%5*batch_size == 0:
+                acc_val, loss_val = test(size=100)
+                file.write(model_name + ',{},{},{},{},{}\n'.format(round(time.time(), 3), round(acc, 3), round(float(loss), 5), round(acc_val, 3), round(float(loss_val), 5)))
+
+train()
