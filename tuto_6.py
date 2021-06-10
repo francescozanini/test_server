@@ -6,10 +6,12 @@ import numpy as np
 from tqdm import tqdm
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.optim as optim
 
 training_data = np.load('training_data.npy', allow_pickle=True)
 
-torch.cuda.is_available()
+print('Cuda availability:', torch.cuda.is_available())
+print('# GPUs: {}'.format(torch.cuda.device_count()))
 
 if torch.cuda.is_available():
     device = torch.device('cuda:0')
